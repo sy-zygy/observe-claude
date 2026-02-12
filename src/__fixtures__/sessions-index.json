@@ -1,0 +1,18 @@
+{
+	"sessions": [
+		{
+			"sessionId": "abc12345-1234-1234-1234-123456789abc",
+			"name": "Refactoring session",
+			"created": "2025-01-15T10:00:00.000Z",
+			"modified": "2025-01-15T10:30:00.000Z",
+			"lastCwd": "/Users/test/project"
+		},
+		{
+			"sessionId": "def67890-5678-5678-5678-567890123def",
+			"name": "Bug fix session",
+			"created": "2025-01-14T09:00:00.000Z",
+			"modified": "2025-01-14T09:45:00.000Z",
+			"lastCwd": "/Users/test/project"
+		}
+	]
+}

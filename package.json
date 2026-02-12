@@ -1,0 +1,38 @@
+{
+	"name": "observe-claude",
+	"version": "0.1.0",
+	"description": "Read-only monitoring panes for live Claude Code sessions",
+	"type": "module",
+	"bin": {
+		"observe-claude": "./bin/observe-claude.js"
+	},
+	"main": "./dist/cli.js",
+	"files": ["bin/", "dist/", "hooks/"],
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"prepare": "tsup",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"test": "vitest run",
+		"test:watch": "vitest"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"dependencies": {
+		"chalk": "^5.3.0",
+		"chokidar": "^4.0.3",
+		"commander": "^13.1.0",
+		"ink": "^5.2.0",
+		"react": "^18.3.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/node": "^22.13.4",
+		"@types/react": "^18.3.18",
+		"tsup": "^8.3.6",
+		"typescript": "^5.7.3",
+		"vitest": "^3.0.5"
+	}
+}
