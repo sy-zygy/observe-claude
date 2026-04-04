@@ -23,9 +23,7 @@ describe("encodeProjectPath", () => {
 	});
 
 	it("encodes spaces and other special characters", () => {
-		expect(encodeProjectPath("/home/user/my project/src")).toBe(
-			"-home-user-my-project-src",
-		);
+		expect(encodeProjectPath("/home/user/my project/src")).toBe("-home-user-my-project-src");
 	});
 
 	it("truncates and hashes paths longer than 200 chars", () => {
