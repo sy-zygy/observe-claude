@@ -1,12 +1,72 @@
 import { execSync, spawn } from "node:child_process";
-import { resolveSession } from "../core/session-resolver.js";
+import { render, useApp } from "ink";
+import React from "react";
+import { listSessionsForProject, resolveSession } from "../core/session-resolver.js";
+import type { SessionInfo } from "../core/types.js";
+import { SessionPicker } from "../ui/SessionPicker.js";
 
 interface LaunchOptions {
 	session?: string;
 }
 
+/**
+ * Wrapper component that renders SessionPicker and exits the Ink app on selection.
+ */
+function PickerWrapper({
+	sessions,
+	onSelect,
+}: {
+	sessions: SessionInfo[];
+	onSelect: (session: SessionInfo) => void;
+}) {
+	const { exit } = useApp();
+
+	const handleSelect = (session: SessionInfo) => {
+		onSelect(session);
+		exit();
+	};
+
+	return React.createElement(SessionPicker, { sessions, onSelect: handleSelect });
+}
+
+async function pickSessionInteractively(sessions: SessionInfo[]): Promise<SessionInfo> {
+	let selected: SessionInfo | null = null;
+
+	const instance = render(
+		React.createElement(PickerWrapper, {
+			sessions,
+			onSelect: (session: SessionInfo) => {
+				selected = session;
+			},
+		}),
+	);
+
+	await instance.waitUntilExit();
+	if (!selected) {
+		throw new Error("No session selected");
+	}
+	return selected;
+}
+
 export async function launch(opts: LaunchOptions): Promise<void> {
-	const session = await resolveSession({ sessionId: opts.session });
+	let session: SessionInfo | null = null;
+
+	if (opts.session) {
+		// Explicit session ID — resolve directly
+		session = await resolveSession({ sessionId: opts.session });
+	} else {
+		const sessions = await listSessionsForProject(process.cwd());
+
+		if (sessions.length === 0) {
+			// Fallback to resolveSession (existing behavior)
+			session = await resolveSession();
+		} else if (sessions.length === 1) {
+			session = sessions[0];
+		} else {
+			// Multiple sessions — show interactive picker
+			session = await pickSessionInteractively(sessions.slice(0, 8));
+		}
+	}
 
 	if (!session) {
 		console.error("No session found. Use --session <id> or run from a project directory.");

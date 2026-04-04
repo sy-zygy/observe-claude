@@ -1,79 +1,8 @@
 import { createRequire } from 'module'; const require = createRequire(import.meta.url);
-
-// src/ui/theme.ts
-var colors = {
-  primary: "#00FF41",
-  // Matrix green
-  secondary: "#00BFFF",
-  // Electric cyan
-  accent: "#FF6600",
-  // Orange
-  warning: "#FFD700",
-  // Gold
-  error: "#FF0040",
-  // Hot red
-  dim: "#666666",
-  // Dimmed text
-  bg: "#000000",
-  // Background
-  text: "#CCCCCC",
-  // Default text
-  bright: "#FFFFFF"
-  // Bright white
-};
-var borders = {
-  topLeft: "\u2554",
-  topRight: "\u2557",
-  bottomLeft: "\u255A",
-  bottomRight: "\u255D",
-  horizontal: "\u2550",
-  vertical: "\u2551",
-  teeLeft: "\u2560",
-  teeRight: "\u2563",
-  teeTop: "\u2566",
-  teeBottom: "\u2569",
-  cross: "\u256C"
-};
-var progressChars = {
-  full: "\u2588",
-  threequarter: "\u2593",
-  half: "\u2592",
-  quarter: "\u2591",
-  empty: " "
-};
-var shades = {
-  light: "\u2591",
-  medium: "\u2592",
-  dark: "\u2593",
-  full: "\u2588"
-};
-function formatTimestamp(date) {
-  return date.toLocaleTimeString("en-US", {
-    hour12: false,
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
-}
-function formatRelativeTime(date) {
-  const seconds = Math.floor((Date.now() - date.getTime()) / 1e3);
-  if (seconds < 60) return `${seconds}s ago`;
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-function formatTokens(count) {
-  if (count >= 1e6) return `${(count / 1e6).toFixed(1)}M`;
-  if (count >= 1e3) return `${(count / 1e3).toFixed(1)}K`;
-  return String(count);
-}
-function formatCost(usd) {
-  if (usd < 0.01) return `$${usd.toFixed(4)}`;
-  return `$${usd.toFixed(2)}`;
-}
+import {
+  colors,
+  shades
+} from "./chunk-FIYYOTHC.js";
 
 // src/ui/Header.tsx
 import { Box, Text } from "ink";
@@ -140,14 +69,6 @@ function Header({
 }
 
 export {
-  colors,
-  borders,
-  progressChars,
-  shades,
-  formatTimestamp,
-  formatRelativeTime,
-  formatTokens,
-  formatCost,
   Header
 };
-//# sourceMappingURL=chunk-EOE7C7BZ.js.map
+//# sourceMappingURL=chunk-R4DGJ4C2.js.map

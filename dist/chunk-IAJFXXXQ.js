@@ -1,7 +1,7 @@
 import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 import {
   colors
-} from "./chunk-EOE7C7BZ.js";
+} from "./chunk-FIYYOTHC.js";
 
 // src/ui/ScrollingLog.tsx
 import { Box, Text } from "ink";
@@ -26,4 +26,4 @@ function ScrollingLog({ lines, maxVisible = 20 }) {
 export {
   ScrollingLog
 };
-//# sourceMappingURL=chunk-CTJP4ZRK.js.map
+//# sourceMappingURL=chunk-IAJFXXXQ.js.map

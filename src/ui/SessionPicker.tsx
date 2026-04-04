@@ -36,7 +36,7 @@ export function SessionPicker({ sessions, onSelect }: SessionPickerProps) {
 					const selected = idx === cursor;
 					const idShort = session.sessionId.slice(0, 8);
 					const modified = session.modified ? formatRelativeTime(session.modified) : "unknown";
-					const name = session.name ?? "";
+					const project = session.projectPath.split("/").filter(Boolean).slice(-2).join("/");
 
 					return (
 						<Box key={session.sessionId}>
@@ -47,7 +47,7 @@ export function SessionPicker({ sessions, onSelect }: SessionPickerProps) {
 							<Text color={colors.dim}>{" │ "}</Text>
 							<Text color={selected ? colors.text : colors.dim}>{modified.padEnd(10)}</Text>
 							<Text color={colors.dim}>{" │ "}</Text>
-							<Text color={selected ? colors.primary : colors.dim}>{name || "(unnamed)"}</Text>
+							<Text color={selected ? colors.primary : colors.dim}>{project}</Text>
 						</Box>
 					);
 				})}

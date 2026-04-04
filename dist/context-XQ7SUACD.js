@@ -1,21 +1,24 @@
 import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 import {
-  SessionPicker,
   StatusBar,
   useSessionResolver
-} from "./chunk-EGTPXE3K.js";
+} from "./chunk-WYX5ZEFJ.js";
 import {
-  Header,
+  Header
+} from "./chunk-R4DGJ4C2.js";
+import {
+  SessionPicker
+} from "./chunk-VXE4UZJ4.js";
+import {
+  JsonlTailer,
   colors,
   formatTokens,
   progressChars
-} from "./chunk-EOE7C7BZ.js";
-import {
-  JsonlTailer
-} from "./chunk-XSIEMPSQ.js";
+} from "./chunk-FIYYOTHC.js";
 
 // src/commands/context.tsx
-import { Box as Box3, Text as Text3 } from "ink";
+import process from "process";
+import { Box as Box3, Text as Text3, useInput } from "ink";
 import { useEffect, useState } from "react";
 
 // src/core/context-estimator.ts
@@ -140,7 +143,7 @@ function TokenBreakdown({ estimate }) {
 // src/commands/context.tsx
 import { jsx as jsx3, jsxs as jsxs3 } from "react/jsx-runtime";
 function ContextApp({ session, banner = false }) {
-  const { state: sessionState, pick } = useSessionResolver(session);
+  const { state: sessionState, pick, repick } = useSessionResolver(session);
   if (sessionState.status === "loading") {
     return /* @__PURE__ */ jsxs3(Box3, { flexDirection: "column", children: [
       /* @__PURE__ */ jsx3(Header, { compact: true, subtitle: "context" }),
@@ -162,9 +165,17 @@ function ContextApp({ session, banner = false }) {
       /* @__PURE__ */ jsx3(Box3, { marginTop: 1, children: /* @__PURE__ */ jsx3(SessionPicker, { sessions: sessionState.sessions, onSelect: pick }) })
     ] });
   }
-  return /* @__PURE__ */ jsx3(ContextView, { session: sessionState.session, banner });
+  return /* @__PURE__ */ jsx3(ContextView, { session: sessionState.session, banner, onRepick: repick });
 }
-function ContextView({ session, banner }) {
+function ContextView({
+  session,
+  banner,
+  onRepick
+}) {
+  useInput((input) => {
+    if (input === "q") process.exit(0);
+    if (input === "s") onRepick();
+  });
   const [estimate, setEstimate] = useState({
     currentTokens: 0,
     maxTokens: 2e5,
@@ -243,4 +254,4 @@ function ContextView({ session, banner }) {
 export {
   ContextApp
 };
-//# sourceMappingURL=context-LADHRTLA.js.map
+//# sourceMappingURL=context-XQ7SUACD.js.map

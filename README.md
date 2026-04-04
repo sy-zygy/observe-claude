@@ -3,13 +3,13 @@
 Read-only monitoring panes for live Claude Code sessions. Tails the JSONL session files that Claude Code writes to `~/.claude/projects/` and displays context usage, token costs, tool events, and reasoning blocks in real-time.
 
 ```
-           ▓██▓▒░         ░▒▓██▓
-       ▓██▒     ░           ░     ▒██▓
-     █▓▒    ░  ▒▓█████▓▒  ░    ▒▓█
-    █▓▒   ░ ▒▓████  ◉  ████▓▒ ░   ▒▓█
-     █▓▒    ░  ▒▓█████▓▒  ░    ▒▓█
-       ▓██▒     ░           ░     ▒██▓
-           ▓██▓▒░         ░▒▓██▓
+           ▓██▓▒░░▒▓██▓
+       ▓██▒     ░  ░   ▒██▓
+     █▓▒  ░  ▒▓█████▓▒  ░ ▒▓█
+    █▓▒░ ▒▓████  ◉  ████▓▒ ░▒▓█
+     █▓▒  ░  ▒▓█████▓▒  ░ ▒▓█
+       ▓██▒     ░     ░▒██▓
+           ▓██▓▒░░▒▓██▓
 
    ╔═══════════════════════════════════╗
    ║   O B S E R V E - C L A U D E   ║
@@ -45,6 +45,8 @@ observe-claude cost              # token counts and dollar cost
 observe-claude events            # tool use / event log
 observe-claude reasoning         # thinking blocks (experimental)
 ```
+
+While monitoring, press `s` to switch sessions or `q` to quit.
 
 By default, these auto-detect the session for the current working directory. If multiple sessions exist for the project, an interactive picker is shown. To target a specific session, pass an ID prefix:
 

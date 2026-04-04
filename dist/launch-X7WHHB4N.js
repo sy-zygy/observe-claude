@@ -1,12 +1,57 @@
 import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 import {
+  SessionPicker
+} from "./chunk-VXE4UZJ4.js";
+import {
+  listSessionsForProject,
   resolveSession
-} from "./chunk-XSIEMPSQ.js";
+} from "./chunk-FIYYOTHC.js";
 
 // src/commands/launch.ts
 import { execSync, spawn } from "child_process";
+import { render, useApp } from "ink";
+import React from "react";
+function PickerWrapper({
+  sessions,
+  onSelect
+}) {
+  const { exit } = useApp();
+  const handleSelect = (session) => {
+    onSelect(session);
+    exit();
+  };
+  return React.createElement(SessionPicker, { sessions, onSelect: handleSelect });
+}
+async function pickSessionInteractively(sessions) {
+  let selected = null;
+  const instance = render(
+    React.createElement(PickerWrapper, {
+      sessions,
+      onSelect: (session) => {
+        selected = session;
+      }
+    })
+  );
+  await instance.waitUntilExit();
+  if (!selected) {
+    throw new Error("No session selected");
+  }
+  return selected;
+}
 async function launch(opts) {
-  const session = await resolveSession({ sessionId: opts.session });
+  let session = null;
+  if (opts.session) {
+    session = await resolveSession({ sessionId: opts.session });
+  } else {
+    const sessions = await listSessionsForProject(process.cwd());
+    if (sessions.length === 0) {
+      session = await resolveSession();
+    } else if (sessions.length === 1) {
+      session = sessions[0];
+    } else {
+      session = await pickSessionInteractively(sessions.slice(0, 8));
+    }
+  }
   if (!session) {
     console.error("No session found. Use --session <id> or run from a project directory.");
     process.exit(1);
@@ -67,4 +112,4 @@ function printManualInstructions(sessionId) {
 export {
   launch
 };
-//# sourceMappingURL=launch-3MJ7CIVY.js.map
+//# sourceMappingURL=launch-X7WHHB4N.js.map

@@ -1,21 +1,24 @@
 import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 import {
-  SessionPicker,
   StatusBar,
   useSessionResolver
-} from "./chunk-EGTPXE3K.js";
+} from "./chunk-WYX5ZEFJ.js";
 import {
-  Header,
+  Header
+} from "./chunk-R4DGJ4C2.js";
+import {
+  SessionPicker
+} from "./chunk-VXE4UZJ4.js";
+import {
+  JsonlTailer,
   colors,
   formatCost,
   formatTokens
-} from "./chunk-EOE7C7BZ.js";
-import {
-  JsonlTailer
-} from "./chunk-XSIEMPSQ.js";
+} from "./chunk-FIYYOTHC.js";
 
 // src/commands/cost.tsx
-import { Box, Text } from "ink";
+import process from "process";
+import { Box, Text, useInput } from "ink";
 import { useEffect, useState } from "react";
 
 // src/core/model-pricing.ts
@@ -172,7 +175,7 @@ function createUsageAggregator() {
 // src/commands/cost.tsx
 import { jsx, jsxs } from "react/jsx-runtime";
 function CostApp({ session }) {
-  const { state: sessionState, pick } = useSessionResolver(session);
+  const { state: sessionState, pick, repick } = useSessionResolver(session);
   if (sessionState.status === "loading") {
     return /* @__PURE__ */ jsxs(Box, { flexDirection: "column", children: [
       /* @__PURE__ */ jsx(Header, { compact: true, subtitle: "cost" }),
@@ -194,7 +197,7 @@ function CostApp({ session }) {
       /* @__PURE__ */ jsx(Box, { marginTop: 1, children: /* @__PURE__ */ jsx(SessionPicker, { sessions: sessionState.sessions, onSelect: pick }) })
     ] });
   }
-  return /* @__PURE__ */ jsx(CostView, { session: sessionState.session });
+  return /* @__PURE__ */ jsx(CostView, { session: sessionState.session, onRepick: repick });
 }
 var EMPTY_TOTALS = {
   inputTokens: 0,
@@ -205,7 +208,11 @@ var EMPTY_TOTALS = {
   messageCount: 0,
   seenMessageIds: /* @__PURE__ */ new Set()
 };
-function CostView({ session }) {
+function CostView({ session, onRepick }) {
+  useInput((input) => {
+    if (input === "q") process.exit(0);
+    if (input === "s") onRepick();
+  });
   const [totals, setTotals] = useState(EMPTY_TOTALS);
   const [lastUpdate, setLastUpdate] = useState(null);
   useEffect(() => {
@@ -282,4 +289,4 @@ function CostView({ session }) {
 export {
   CostApp
 };
-//# sourceMappingURL=cost-I4ZEV67L.js.map
+//# sourceMappingURL=cost-FJYV77RO.js.map

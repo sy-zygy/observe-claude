@@ -1,15 +1,15 @@
 import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 import {
-  Header,
+  Header
+} from "./chunk-R4DGJ4C2.js";
+import {
   borders,
   colors,
-  formatRelativeTime
-} from "./chunk-EOE7C7BZ.js";
-import {
+  formatRelativeTime,
   getSessionPreview,
   listAllSessions,
   listSessionsForProject
-} from "./chunk-XSIEMPSQ.js";
+} from "./chunk-FIYYOTHC.js";
 
 // src/commands/sessions.tsx
 import { Box as Box2, Text as Text2 } from "ink";
@@ -126,4 +126,4 @@ function SessionsApp({ all = false, limit = 20 }) {
 export {
   SessionsApp
 };
-//# sourceMappingURL=sessions-EEJNNPEI.js.map
+//# sourceMappingURL=sessions-XYZGRXQM.js.map

@@ -1,4 +1,5 @@
-import { Box, Text } from "ink";
+import process from "node:process";
+import { Box, Text, useInput } from "ink";
 import { useEffect, useState } from "react";
 import { JsonlTailer } from "../core/jsonl-parser.js";
 import type { JsonlLine, SessionInfo, ThinkingContentBlock } from "../core/types.js";
@@ -20,7 +21,7 @@ interface ThinkingEntry {
 }
 
 export function ReasoningApp({ session }: ReasoningAppProps) {
-	const { state: sessionState, pick } = useSessionResolver(session);
+	const { state: sessionState, pick, repick } = useSessionResolver(session);
 
 	if (sessionState.status === "loading") {
 		return (
@@ -51,10 +52,14 @@ export function ReasoningApp({ session }: ReasoningAppProps) {
 		);
 	}
 
-	return <ReasoningView session={sessionState.session} />;
+	return <ReasoningView session={sessionState.session} onRepick={repick} />;
 }
 
-function ReasoningView({ session }: { session: SessionInfo }) {
+function ReasoningView({ session, onRepick }: { session: SessionInfo; onRepick: () => void }) {
+	useInput((input) => {
+		if (input === "q") process.exit(0);
+		if (input === "s") onRepick();
+	});
 	const [thinkingBlocks, setThinkingBlocks] = useState<ThinkingEntry[]>([]);
 	const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile, readdir, stat } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
@@ -7,15 +8,27 @@ import type { SessionInfo, SessionsIndex } from "./types.js";
 const CLAUDE_DIR = join(homedir(), ".claude");
 const PROJECTS_DIR = join(CLAUDE_DIR, "projects");
 
-/** Encode a project path: /Users/foo/bar -> -Users-foo-bar */
+const MAX_ENCODED_LENGTH = 200;
+
+/**
+ * Encode a project path the same way Claude Code does:
+ * replace all non-alphanumeric characters with "-".
+ * For paths longer than 200 chars after encoding, truncate and append a hash.
+ */
 export function encodeProjectPath(cwd: string): string {
 	const absolute = resolve(cwd);
-	return absolute.replace(/\//g, "-");
+	const encoded = absolute.replace(/[^a-zA-Z0-9]/g, "-");
+	if (encoded.length <= MAX_ENCODED_LENGTH) return encoded;
+	const hash = createHash("sha256").update(absolute).digest("hex").slice(0, 8);
+	return `${encoded.slice(0, MAX_ENCODED_LENGTH)}-${hash}`;
 }
 
-/** Decode an encoded project path: -Users-foo-bar -> /Users/foo/bar */
+/**
+ * Best-effort decode of an encoded project path: -Users-foo-bar -> /Users/foo/bar
+ * Note: this is lossy — characters like "." also become "-" during encoding,
+ * so the decoded path may not exactly match the original.
+ */
 export function decodeProjectPath(encoded: string): string {
-	// Replace leading dash and all dashes with /
 	return encoded.replace(/-/g, "/");
 }
 
@@ -90,6 +103,13 @@ async function scanJsonlFiles(projectDir: string): Promise<SessionInfo[]> {
 				// skip unreadable files
 			}
 		}
+
+		// Sort by modified date, most recent first
+		sessions.sort((a, b) => {
+			const aTime = a.modified?.getTime() ?? 0;
+			const bTime = b.modified?.getTime() ?? 0;
+			return bTime - aTime;
+		});
 
 		return sessions;
 	} catch {
@@ -214,13 +234,10 @@ export async function resolveSession(
 		return sessions[0]; // Most recent
 	}
 
-	// Fallback: search all sessions for matching project path
+	// Fallback: search all sessions for matching encoded project path
 	const all = await listAllSessions();
-	const cwdResolved = resolve(cwd);
-	const match = all.find((s) => {
-		const decoded = decodeProjectPath(s.encodedPath);
-		return decoded === cwdResolved;
-	});
+	const cwdEncoded = encodeProjectPath(resolve(cwd));
+	const match = all.find((s) => s.encodedPath === cwdEncoded);
 
 	return match ?? null;
 }

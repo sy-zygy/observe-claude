@@ -1,26 +1,29 @@
 import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 import {
   ScrollingLog
-} from "./chunk-CTJP4ZRK.js";
+} from "./chunk-IAJFXXXQ.js";
 import {
-  SessionPicker,
   StatusBar,
   useSessionResolver
-} from "./chunk-EGTPXE3K.js";
+} from "./chunk-WYX5ZEFJ.js";
 import {
-  Header,
+  Header
+} from "./chunk-R4DGJ4C2.js";
+import {
+  SessionPicker
+} from "./chunk-VXE4UZJ4.js";
+import {
+  JsonlTailer,
   colors
-} from "./chunk-EOE7C7BZ.js";
-import {
-  JsonlTailer
-} from "./chunk-XSIEMPSQ.js";
+} from "./chunk-FIYYOTHC.js";
 
 // src/commands/reasoning.tsx
-import { Box, Text } from "ink";
+import process from "process";
+import { Box, Text, useInput } from "ink";
 import { useEffect, useState } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
 function ReasoningApp({ session }) {
-  const { state: sessionState, pick } = useSessionResolver(session);
+  const { state: sessionState, pick, repick } = useSessionResolver(session);
   if (sessionState.status === "loading") {
     return /* @__PURE__ */ jsxs(Box, { flexDirection: "column", children: [
       /* @__PURE__ */ jsx(Header, { compact: true, subtitle: "reasoning" }),
@@ -42,9 +45,13 @@ function ReasoningApp({ session }) {
       /* @__PURE__ */ jsx(Box, { marginTop: 1, children: /* @__PURE__ */ jsx(SessionPicker, { sessions: sessionState.sessions, onSelect: pick }) })
     ] });
   }
-  return /* @__PURE__ */ jsx(ReasoningView, { session: sessionState.session });
+  return /* @__PURE__ */ jsx(ReasoningView, { session: sessionState.session, onRepick: repick });
 }
-function ReasoningView({ session }) {
+function ReasoningView({ session, onRepick }) {
+  useInput((input) => {
+    if (input === "q") process.exit(0);
+    if (input === "s") onRepick();
+  });
   const [thinkingBlocks, setThinkingBlocks] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
   useEffect(() => {
@@ -105,4 +112,4 @@ function ReasoningView({ session }) {
 export {
   ReasoningApp
 };
-//# sourceMappingURL=reasoning-WY3HCRZX.js.map
+//# sourceMappingURL=reasoning-ZIGVS6BY.js.map

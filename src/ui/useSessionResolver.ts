@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { listSessionsForProject } from "../core/session-resolver.js";
+import { useCallback, useEffect, useState } from "react";
+import { listAllSessions, listSessionsForProject } from "../core/session-resolver.js";
 import { resolveSession } from "../core/session-resolver.js";
 import type { SessionInfo } from "../core/types.js";
 
@@ -16,6 +16,7 @@ export type SessionState =
 export function useSessionResolver(sessionId?: string): {
 	state: SessionState;
 	pick: (session: SessionInfo) => void;
+	repick: () => void;
 } {
 	const [state, setState] = useState<SessionState>({ status: "loading" });
 
@@ -58,8 +59,8 @@ export function useSessionResolver(sessionId?: string): {
 					return;
 				}
 
-				// Multiple sessions — show picker
-				setState({ status: "pick", sessions });
+				// Multiple sessions — show picker (latest 8)
+				setState({ status: "pick", sessions: sessions.slice(0, 8) });
 			} catch (err) {
 				setState({
 					status: "error",
@@ -73,5 +74,18 @@ export function useSessionResolver(sessionId?: string): {
 		setState({ status: "resolved", session });
 	}
 
-	return { state, pick };
+	const repick = useCallback(() => {
+		(async () => {
+			try {
+				const sessions = await listAllSessions();
+				if (sessions.length > 0) {
+					setState({ status: "pick", sessions: sessions.slice(0, 8) });
+				}
+			} catch {
+				// Stay on current view if fetch fails
+			}
+		})();
+	}, []);
+
+	return { state, pick, repick };
 }

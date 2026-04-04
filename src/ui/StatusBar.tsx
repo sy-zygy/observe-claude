@@ -31,7 +31,7 @@ export function StatusBar({ lastUpdate, eventCount, hooksActive }: StatusBarProp
 				{shades.medium}
 				{shades.light}
 			</Text>
-			<Text color={colors.dim}> (q to quit)</Text>
+			<Text color={colors.dim}> (s: sessions, q: quit)</Text>
 		</Box>
 	);
 }

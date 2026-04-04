@@ -1,27 +1,30 @@
 import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 import {
   ScrollingLog
-} from "./chunk-CTJP4ZRK.js";
+} from "./chunk-IAJFXXXQ.js";
 import {
-  SessionPicker,
   StatusBar,
   useSessionResolver
-} from "./chunk-EGTPXE3K.js";
+} from "./chunk-WYX5ZEFJ.js";
 import {
-  Header,
+  Header
+} from "./chunk-R4DGJ4C2.js";
+import {
+  SessionPicker
+} from "./chunk-VXE4UZJ4.js";
+import {
+  JsonlTailer,
   colors,
   formatTimestamp
-} from "./chunk-EOE7C7BZ.js";
-import {
-  JsonlTailer
-} from "./chunk-XSIEMPSQ.js";
+} from "./chunk-FIYYOTHC.js";
 
 // src/commands/events.tsx
-import { Box, Text } from "ink";
+import process from "process";
+import { Box, Text, useInput } from "ink";
 import { useEffect, useState } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
 function EventsApp({ session }) {
-  const { state: sessionState, pick } = useSessionResolver(session);
+  const { state: sessionState, pick, repick } = useSessionResolver(session);
   if (sessionState.status === "loading") {
     return /* @__PURE__ */ jsxs(Box, { flexDirection: "column", children: [
       /* @__PURE__ */ jsx(Header, { compact: true, subtitle: "events" }),
@@ -43,9 +46,13 @@ function EventsApp({ session }) {
       /* @__PURE__ */ jsx(Box, { marginTop: 1, children: /* @__PURE__ */ jsx(SessionPicker, { sessions: sessionState.sessions, onSelect: pick }) })
     ] });
   }
-  return /* @__PURE__ */ jsx(EventsView, { session: sessionState.session });
+  return /* @__PURE__ */ jsx(EventsView, { session: sessionState.session, onRepick: repick });
 }
-function EventsView({ session }) {
+function EventsView({ session, onRepick }) {
+  useInput((input) => {
+    if (input === "q") process.exit(0);
+    if (input === "s") onRepick();
+  });
   const [events, setEvents] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
   useEffect(() => {
@@ -170,4 +177,4 @@ function summarizeToolInput(toolName, input) {
 export {
   EventsApp
 };
-//# sourceMappingURL=events-4NQ7L7JK.js.map
+//# sourceMappingURL=events-64RH2V4E.js.map

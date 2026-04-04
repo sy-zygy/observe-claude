@@ -7,7 +7,7 @@ import React from "react";
 var program = new Command();
 program.name("observe-claude").description("Read-only monitoring panes for live Claude Code sessions").version("0.1.0");
 program.command("sessions").description("List Claude Code sessions").option("-a, --all", "Show sessions from all projects", false).option("-l, --limit <n>", "Max sessions to display", "20").action(async (opts) => {
-  const { SessionsApp } = await import("./sessions-EEJNNPEI.js");
+  const { SessionsApp } = await import("./sessions-XYZGRXQM.js");
   const { render: render2 } = await import("ink");
   const instance = render2(
     React.createElement(SessionsApp, {
@@ -18,29 +18,29 @@ program.command("sessions").description("List Claude Code sessions").option("-a,
   await instance.waitUntilExit();
 });
 program.command("context").description("Live context window gauge").option("-s, --session <id>", "Session ID (prefix match)").option("--banner", "Show large eye logo (used by launch)", false).action(async (opts) => {
-  const { ContextApp } = await import("./context-LADHRTLA.js");
+  const { ContextApp } = await import("./context-XQ7SUACD.js");
   const instance = render(
     React.createElement(ContextApp, { session: opts.session, banner: opts.banner })
   );
   await instance.waitUntilExit();
 });
 program.command("cost").description("Live token/cost tracker").option("-s, --session <id>", "Session ID (prefix match)").action(async (opts) => {
-  const { CostApp } = await import("./cost-I4ZEV67L.js");
+  const { CostApp } = await import("./cost-FJYV77RO.js");
   const instance = render(React.createElement(CostApp, { session: opts.session }));
   await instance.waitUntilExit();
 });
 program.command("events").description("Live tool/event log").option("-s, --session <id>", "Session ID (prefix match)").action(async (opts) => {
-  const { EventsApp } = await import("./events-4NQ7L7JK.js");
+  const { EventsApp } = await import("./events-64RH2V4E.js");
   const instance = render(React.createElement(EventsApp, { session: opts.session }));
   await instance.waitUntilExit();
 });
 program.command("reasoning").description("Live thinking blocks (experimental)").option("-s, --session <id>", "Session ID (prefix match)").action(async (opts) => {
-  const { ReasoningApp } = await import("./reasoning-WY3HCRZX.js");
+  const { ReasoningApp } = await import("./reasoning-ZIGVS6BY.js");
   const instance = render(React.createElement(ReasoningApp, { session: opts.session }));
   await instance.waitUntilExit();
 });
 program.command("launch").description("Spawn multi-pane monitoring layout").option("-s, --session <id>", "Session ID (prefix match)").action(async (opts) => {
-  const { launch } = await import("./launch-3MJ7CIVY.js");
+  const { launch } = await import("./launch-X7WHHB4N.js");
   await launch(opts);
 });
 program.command("init").description("Install observe-claude hooks into Claude Code").action(async () => {

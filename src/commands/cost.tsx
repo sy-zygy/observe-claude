@@ -1,4 +1,5 @@
-import { Box, Text } from "ink";
+import process from "node:process";
+import { Box, Text, useInput } from "ink";
 import { useEffect, useState } from "react";
 import { JsonlTailer } from "../core/jsonl-parser.js";
 import type { JsonlLine, SessionInfo, UsageTotals } from "../core/types.js";
@@ -14,7 +15,7 @@ interface CostAppProps {
 }
 
 export function CostApp({ session }: CostAppProps) {
-	const { state: sessionState, pick } = useSessionResolver(session);
+	const { state: sessionState, pick, repick } = useSessionResolver(session);
 
 	if (sessionState.status === "loading") {
 		return (
@@ -45,7 +46,7 @@ export function CostApp({ session }: CostAppProps) {
 		);
 	}
 
-	return <CostView session={sessionState.session} />;
+	return <CostView session={sessionState.session} onRepick={repick} />;
 }
 
 const EMPTY_TOTALS: UsageTotals = {
@@ -58,7 +59,11 @@ const EMPTY_TOTALS: UsageTotals = {
 	seenMessageIds: new Set(),
 };
 
-function CostView({ session }: { session: SessionInfo }) {
+function CostView({ session, onRepick }: { session: SessionInfo; onRepick: () => void }) {
+	useInput((input) => {
+		if (input === "q") process.exit(0);
+		if (input === "s") onRepick();
+	});
 	const [totals, setTotals] = useState<UsageTotals>(EMPTY_TOTALS);
 	const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 

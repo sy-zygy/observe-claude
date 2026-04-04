@@ -1,4 +1,5 @@
-import { Box, Text } from "ink";
+import process from "node:process";
+import { Box, Text, useInput } from "ink";
 import { useEffect, useState } from "react";
 import { createContextEstimator } from "../core/context-estimator.js";
 import { JsonlTailer } from "../core/jsonl-parser.js";
@@ -18,7 +19,7 @@ interface ContextAppProps {
 }
 
 export function ContextApp({ session, banner = false }: ContextAppProps) {
-	const { state: sessionState, pick } = useSessionResolver(session);
+	const { state: sessionState, pick, repick } = useSessionResolver(session);
 
 	if (sessionState.status === "loading") {
 		return (
@@ -49,10 +50,18 @@ export function ContextApp({ session, banner = false }: ContextAppProps) {
 		);
 	}
 
-	return <ContextView session={sessionState.session} banner={banner} />;
+	return <ContextView session={sessionState.session} banner={banner} onRepick={repick} />;
 }
 
-function ContextView({ session, banner }: { session: SessionInfo; banner: boolean }) {
+function ContextView({
+	session,
+	banner,
+	onRepick,
+}: { session: SessionInfo; banner: boolean; onRepick: () => void }) {
+	useInput((input) => {
+		if (input === "q") process.exit(0);
+		if (input === "s") onRepick();
+	});
 	const [estimate, setEstimate] = useState<ContextEstimate>({
 		currentTokens: 0,
 		maxTokens: 200_000,
