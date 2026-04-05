@@ -43,7 +43,7 @@ Run any of these in a separate terminal while Claude Code is active:
 observe-claude context           # context window gauge (token usage %)
 observe-claude cost              # token counts and dollar cost
 observe-claude events            # tool use / event log
-observe-claude reasoning         # thinking blocks (experimental)
+observe-claude reasoning         # assistant reasoning trace
 ```
 
 While monitoring, press `s` to switch sessions or `q` to quit.
