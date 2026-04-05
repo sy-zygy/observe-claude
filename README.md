@@ -11,9 +11,9 @@ Read-only monitoring panes for live Claude Code sessions. Tails the JSONL sessio
        ▓██▒     ░     ░▒██▓
            ▓██▓▒░░▒▓██▓
 
-   ╔═══════════════════════════════════╗
-   ║   O B S E R V E - C L A U D E   ║
-   ╚═══════════════════════════════════╝
+╔═══════════════════════════════════╗
+    O B S E R V E - C L A U D E
+╚═══════════════════════════════════╝
 ```
 
 ## Install
